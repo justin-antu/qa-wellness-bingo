@@ -32,8 +32,18 @@ export default function FlipCard({
   return (
     <div className={cn("flip-card-scene", className)} {...props}>
       <div className={cn("flip-card-inner", flipped && "is-flipped")}>
-        <div className={cn("flip-card-face", frontClassName)}>{front}</div>
-        <div className={cn("flip-card-face flip-card-face-back", backClassName)}>{back}</div>
+        <div className={cn("flip-card-face", flipped && "flip-card-face-inactive", frontClassName)}>
+          {front}
+        </div>
+        <div
+          className={cn(
+            "flip-card-face flip-card-face-back",
+            !flipped && "flip-card-face-inactive",
+            backClassName
+          )}
+        >
+          {back}
+        </div>
       </div>
     </div>
   );

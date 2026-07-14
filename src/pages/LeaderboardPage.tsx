@@ -31,11 +31,14 @@ export default function LeaderboardPage() {
   async function handleDownload() {
     if (!cardRef.current || capturing) return;
     setCapturing(true);
+    const node = cardRef.current;
+    node.classList.add("is-capturing");
     try {
-      await downloadElementAsImage(cardRef.current, `leaderboard-${dateStamp()}.png`);
+      await downloadElementAsImage(node, `leaderboard-${dateStamp()}.png`);
     } catch {
       setError("Couldn't create the image, try again.");
     } finally {
+      node.classList.remove("is-capturing");
       setCapturing(false);
     }
   }

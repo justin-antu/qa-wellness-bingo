@@ -352,6 +352,10 @@ button {
   margin-bottom: 16px;
 }
 
+.is-capturing .leaderboard-header-actions {
+  display: none;
+}
+
 .leaderboard-header-actions {
   display: flex;
   align-items: center;
