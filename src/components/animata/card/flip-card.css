@@ -24,28 +24,24 @@
   transform: rotateY(180deg);
 }
 
+.flip-card-capture-face {
+  display: none;
+  position: absolute;
+  inset: 0;
+}
+
 /*
  * html-to-image (used by the "Save image" buttons) rasterizes via SVG
- * foreignObject, which can't reliably flatten a 3D-transformed subtree -
- * both faces end up rendering on top of each other (and sometimes the whole
- * capture mirrors). While an ancestor is marked `.is-capturing`, drop all 3D
- * transforms/perspective and hide the inactive face with plain `visibility`
- * instead, so screenshots show a flat, correct single face per cell.
+ * foreignObject, which can't reliably flatten the 3D perspective/rotateY
+ * transform used for the flip animation - it was rendering both faces on
+ * top of each other and mirroring content. While an ancestor is marked
+ * `.is-capturing`, hide the transformed card entirely and show the flat
+ * `.flip-card-capture-face` stand-in instead.
  */
-.is-capturing .flip-card-scene {
-  perspective: none;
-}
-
 .is-capturing .flip-card-inner {
-  transform: none !important;
-  transform-style: flat;
+  display: none;
 }
 
-.is-capturing .flip-card-face {
-  transform: none !important;
-  backface-visibility: visible;
-}
-
-.is-capturing .flip-card-face-inactive {
-  visibility: hidden;
+.is-capturing .flip-card-capture-face {
+  display: block;
 }

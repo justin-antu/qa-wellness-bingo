@@ -32,18 +32,18 @@ export default function FlipCard({
   return (
     <div className={cn("flip-card-scene", className)} {...props}>
       <div className={cn("flip-card-inner", flipped && "is-flipped")}>
-        <div className={cn("flip-card-face", flipped && "flip-card-face-inactive", frontClassName)}>
-          {front}
-        </div>
-        <div
-          className={cn(
-            "flip-card-face flip-card-face-back",
-            !flipped && "flip-card-face-inactive",
-            backClassName
-          )}
-        >
-          {back}
-        </div>
+        <div className={cn("flip-card-face", frontClassName)}>{front}</div>
+        <div className={cn("flip-card-face flip-card-face-back", backClassName)}>{back}</div>
+      </div>
+      {/*
+       * Flat, non-transformed stand-in for the currently active face, only
+       * shown while an ancestor is `.is-capturing`. html-to-image rasterizes
+       * via SVG foreignObject, which can't reliably flatten the 3D
+       * perspective/rotateY transform above - rather than fight that, we
+       * just hide the transformed version and show this plain copy instead.
+       */}
+      <div className={cn("flip-card-capture-face", flipped ? backClassName : frontClassName)}>
+        {flipped ? back : front}
       </div>
     </div>
   );
