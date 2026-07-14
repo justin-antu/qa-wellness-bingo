@@ -198,6 +198,33 @@ This is already wired up - no extra setup needed.
   keep this simple) - people who lose their PIN need an admin to reset it from
   the Participants tab.
 
+## Backups
+
+Supabase's free tier has no automatic backups (Point-in-Time-Recovery is a
+paid-tier feature) - here are free ways to cover yourself, roughly in order
+of effort:
+
+- **Adhoc script backup (recommended)** - `npm run backup` exports every
+  table (participants, activities, rounds, completions, settings, admin
+  password hash) to a single timestamped JSON file in
+  `scripts/output/backups/` (gitignored - contains PIN/password hashes, so
+  copy it somewhere durable like a private repo or cloud drive rather than
+  leaving it only on your machine). Restore it later with
+  `npm run restore -- scripts/output/backups/<file>.json`, which upserts
+  every row back (safe to run against a DB that already has data - nothing
+  gets deleted, matching rows are just overwritten). Good habit: run it
+  before "Start new round", bulk edits, or anything else risky.
+- **No-code option** - in the Supabase dashboard's **Table Editor**, open a
+  table and use the export button to download it as CSV. Quicker for a
+  single table, but you'd need to do this once per table and there's no
+  matching one-click restore.
+- **Fully automatic (still free)** - if you want backups without having to
+  remember to run anything, add a scheduled GitHub Actions workflow (free
+  on public repos) that runs `npm run backup` on a cron and uploads the
+  result as a workflow artifact or commits it to a private backups repo.
+  Not set up here since it's easy to add later if you want it - ask if you'd
+  like this wired up.
+
 ## Cost
 
 Free: GitHub Pages (free for public repos) + Supabase free tier comfortably
@@ -209,6 +236,8 @@ covers 20-30 people x 25 activities indefinitely.
 supabase/schema.sql        Tables, RLS policies, RPC functions (participant + admin)
 supabase/seed.sql          The 25 challenge activities, default settings/round/admin password
 scripts/seed-participants.ts   Bulk-seed script: creates participants + PINs from a list
+scripts/backup.ts          Exports every table to a timestamped JSON file (see Backups)
+scripts/restore.ts         Restores a JSON file produced by scripts/backup.ts
 src/pages/LandingPage.tsx  Homepage: leaderboard + Join/Log in buttons
 src/pages/JoinPage.tsx     Self-signup form (username + RMIT email)
 src/pages/JoinConfirmPage.tsx  Shows the generated PIN once, with a save-it warning
