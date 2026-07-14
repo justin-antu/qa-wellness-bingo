@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+
+# Contains real team member names - keep private, use participants.example.json as the template.
+scripts/participants.json
+# Contains plaintext PINs - never commit.
+scripts/output/
+
+.DS_Store
+*.log
